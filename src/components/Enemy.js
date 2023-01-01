@@ -11,7 +11,6 @@ class Enemy extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.gameEnded);
     this.timer = setInterval(() => {
       // console.log(this.props.gameEnded);
       if (!this.props.gameEnded) {
@@ -21,8 +20,11 @@ class Enemy extends React.Component {
         });
         this.props.checkPos(this.state.xPos, this.state.yPos);
       } else {
-        console.log(this.props.gameEnded);
         clearInterval(this.timer);
+        this.setState({
+          xPos: 900,
+          yPos: 100,
+        });
       }
     }, 40);
   }
@@ -48,12 +50,16 @@ class Enemy extends React.Component {
   }
 
   render() {
-    return (
-      <div
-        className="enemy"
-        style={{ top: this.state.yPos, left: this.state.xPos }}
-      ></div>
-    );
+    if (this.props.gameEnded) {
+      return null;
+    } else {
+      return (
+        <div
+          className="enemy"
+          style={{ top: this.state.yPos, left: this.state.xPos }}
+        ></div>
+      );
+    }
   }
 }
 

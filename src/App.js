@@ -1,6 +1,7 @@
 import "./App.css";
-import React from "react";
+import React, { Fragment } from "react";
 import Enemy from "./components/Enemy";
+import Power from "./components/Power";
 
 class App extends React.Component {
   constructor(props) {
@@ -9,11 +10,13 @@ class App extends React.Component {
       xPos: 900,
       yPos: 600,
       gameEnded: false,
+      score: 0,
     };
     this.interval = null;
     this.moveBall = this.moveBall.bind(this);
     this.checkPos = this.checkPos.bind(this);
     this.replay = this.replay.bind(this);
+    this.powerTouched = this.powerTouched.bind(this);
   }
 
   moveBall(event) {
@@ -74,14 +77,29 @@ class App extends React.Component {
         15 &&
       !this.state.gameEnded
     ) {
-      console.log("    Plr enmy");
-      console.log("XPOS", this.state.xPos, enemyxPos);
-      console.log("YPOS", this.state.yPos, enemyyPos);
-      console.log("________________________");
+      // console.log("    Plr enmy");
+      // console.log("XPOS", this.state.xPos, enemyxPos);
+      // console.log("YPOS", this.state.yPos, enemyyPos);
+      // console.log("________________________");
       this.setState({
         gameEnded: true,
       });
     } //Make modal and if the button is pressed switch gameEnded to false
+  }
+
+  powerTouched(powerxPos, poweryPos) {
+    if (
+      ((this.state.xPos - powerxPos) ** 2 +
+        (this.state.yPos - poweryPos) ** 2) **
+        0.5 <
+      15
+    ) {
+      this.setState({
+        score: this.state.score + 1,
+      });
+      return true;
+    }
+    return false;
   }
 
   componentDidMount() {
@@ -100,34 +118,50 @@ class App extends React.Component {
       gameEnded: false,
       xPos: 900,
       yPos: 600,
+      score: 0,
     });
+    console.log(this.state.xPos);
     window.addEventListener("keydown", this.moveBall);
   }
 
   render() {
     if (this.state.gameEnded) {
       return (
-        <div className="gameOver">
-          Play Again!!!
-          <Enemy gameEnded={this.state.gameEnded}></Enemy>
-          <button onClick={this.replay}>Click me</button>
+        <div className="App">
+          <header className="App-header">
+            <div onClick={this.replay} className="gameOver">
+              Click anywhere to play again!!!
+            </div>
+            <Fragment>
+              <Power gameEnded={this.state.gameEnded}></Power>
+              <Enemy gameEnded={this.state.gameEnded}></Enemy>
+            </Fragment>
+          </header>
         </div>
       );
     } else {
       return (
         <div className="App">
           <header className="App-header">
+            <p>{this.state.score}</p>
             <div
               className="ball"
               style={{ top: this.state.yPos, left: this.state.xPos }}
             ></div>
-            <Enemy
-              checkPos={this.checkPos}
-              xPos={this.state.xPos}
-              yPos={this.state.yPos}
-              gameEnded={this.state.gameEnded}
-            ></Enemy>
-            {/* <powerUp gameEnded={this.state.gameEnded}></powerUp> */}
+            <Fragment>
+              <Power
+                powerTouched={this.powerTouched}
+                xPos={this.state.xPos}
+                yPos={this.state.yPos}
+                gameEnded={this.state.gameEnded}
+              ></Power>
+              <Enemy
+                checkPos={this.checkPos}
+                xPos={this.state.xPos}
+                yPos={this.state.yPos}
+                gameEnded={this.state.gameEnded}
+              ></Enemy>
+            </Fragment>
           </header>
         </div>
       );
