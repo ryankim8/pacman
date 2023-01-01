@@ -20,6 +20,8 @@ class Power extends React.Component {
           xPos: 20 + Math.random() * 1000,
           yPos: 20 + Math.random() * 600,
         });
+      } else {
+        clearInterval(this.timer);
       }
     });
   }
