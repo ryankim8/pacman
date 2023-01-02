@@ -143,7 +143,10 @@ class App extends React.Component {
       return (
         <div className="App">
           <header className="App-header">
-            <p>{this.state.score}</p>
+            <div className="newScore" key={this.state.score}>
+              {/* I want to make transition for everytiwme this gets updated */}
+              <p>{this.state.score}</p>
+            </div>
             <div
               className="ball"
               style={{ top: this.state.yPos, left: this.state.xPos }}

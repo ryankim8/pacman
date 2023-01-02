@@ -54,3 +54,34 @@
   background-color: #282c34;
   color: aliceblue;
 }
+
+@keyframes slideinLeft {
+  from {
+    transform: translateX(-100px)
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideinRight {
+  from {
+    transform: translateX(0)
+  }
+  to {
+    transform: translateX(100px);
+  }
+}
+
+.newScore {
+  animation-name: slideinLeft;
+  animation-duration: .8s;
+  animation-timing-function: ease;
+  animation-play-state: running;
+  z-index: 1;
+}
+
+.oldScore {
+
+  z-index: 2;
+}
