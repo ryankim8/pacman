@@ -70,6 +70,8 @@ class App extends React.Component {
   }
 
   checkPos(enemyxPos, enemyyPos) {
+    // console.log("XPOS", this.state.xPos, enemyxPos);
+    // console.log("YPOS", this.state.yPos, enemyyPos);
     if (
       ((this.state.xPos - enemyxPos) ** 2 +
         (this.state.yPos - enemyyPos) ** 2) **
@@ -84,6 +86,7 @@ class App extends React.Component {
       this.setState({
         gameEnded: true,
       });
+      console.log("checkPos");
     } //Make modal and if the button is pressed switch gameEnded to false
   }
 
@@ -120,55 +123,43 @@ class App extends React.Component {
       yPos: 600,
       score: 0,
     });
-    console.log(this.state.xPos);
+    console.log("s");
     window.addEventListener("keydown", this.moveBall);
   }
 
   render() {
-    if (this.state.gameEnded) {
-      return (
-        <div className="App">
-          <header className="App-header">
-            <div onClick={this.replay} className="gameOver">
-              Click anywhere to play again!!!
-            </div>
-            <Fragment>
-              <Power gameEnded={this.state.gameEnded}></Power>
-              <Enemy gameEnded={this.state.gameEnded}></Enemy>
-            </Fragment>
-          </header>
-        </div>
-      );
-    } else {
-      return (
-        <div className="App">
-          <header className="App-header">
+    return (
+      <div className="App">
+        <header className="App-header">
+          {!this.state.gameEnded ? (
             <div className="newScore" key={this.state.score}>
               {/* I want to make transition for everytiwme this gets updated */}
               <p>{this.state.score}</p>
             </div>
-            <div
-              className="ball"
-              style={{ top: this.state.yPos, left: this.state.xPos }}
-            ></div>
-            <Fragment>
-              <Power
-                powerTouched={this.powerTouched}
-                xPos={this.state.xPos}
-                yPos={this.state.yPos}
-                gameEnded={this.state.gameEnded}
-              ></Power>
-              <Enemy
-                checkPos={this.checkPos}
-                xPos={this.state.xPos}
-                yPos={this.state.yPos}
-                gameEnded={this.state.gameEnded}
-              ></Enemy>
-            </Fragment>
-          </header>
-        </div>
-      );
-    }
+          ) : (
+            <div onClick={this.replay} className="gameOver">
+              Click anywhere to play again!!!
+            </div>
+          )}
+          <div
+            className="ball"
+            style={{ top: this.state.yPos, left: this.state.xPos }}
+          ></div>
+          <Power
+            powerTouched={this.powerTouched}
+            xPos={this.state.xPos}
+            yPos={this.state.yPos}
+            gameEnded={this.state.gameEnded}
+          ></Power>
+          <Enemy
+            checkPos={this.checkPos}
+            xPos={this.state.xPos}
+            yPos={this.state.yPos}
+            gameEnded={this.state.gameEnded}
+          ></Enemy>
+        </header>
+      </div>
+    );
   }
 }
 

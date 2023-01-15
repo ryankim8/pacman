@@ -11,22 +11,35 @@ class Enemy extends React.Component {
   }
 
   componentDidMount() {
+    console.log("componentDidMount");
+    console.log(this.props.gameEnded);
     this.timer = setInterval(() => {
-      // console.log(this.props.gameEnded);
+      //console.log(this.props.gameEnded);
       if (!this.props.gameEnded) {
         this.setState({
           xPos: this.state.xPos + this.moveX(),
           yPos: this.state.yPos + this.moveY(),
         });
-        this.props.checkPos(this.state.xPos, this.state.yPos);
       } else {
-        clearInterval(this.timer);
+        console.log(this.props.gameEnded);
         this.setState({
           xPos: 900,
           yPos: 100,
         });
       }
     }, 40);
+  }
+
+  componentWillUnmount() {
+    console.log("Componentwillunmount");
+  }
+
+  componentDidUpdate() {
+    if (this.state.gameEnded) {
+      clearInterval(this.timer);
+    } else {
+      this.props.checkPos(this.state.xPos, this.state.yPos);
+    }
   }
 
   moveX() {
@@ -50,16 +63,12 @@ class Enemy extends React.Component {
   }
 
   render() {
-    if (this.props.gameEnded) {
-      return null;
-    } else {
-      return (
-        <div
-          className="enemy"
-          style={{ top: this.state.yPos, left: this.state.xPos }}
-        ></div>
-      );
-    }
+    return (
+      <div
+        className="enemy"
+        style={{ top: this.state.yPos, left: this.state.xPos }}
+      ></div>
+    );
   }
 }
 
